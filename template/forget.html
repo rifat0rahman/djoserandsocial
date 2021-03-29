@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app1">
+        {{ request.get_full_path }}
+        [[msg]]
+        [[email]]
+        <div>
+
+            <h1>
+                give your email here
+                <input type="email" placeholder="email" v-model="email">
+                <button @click.prevent="submit">submit</button>
+            </h1>
+        </div>
+    </div>
+
+</body>
+<script>
+    var app = new Vue({
+        el: "#app1",
+        delimiters: ['[[', ']]'],
+        data: {
+            msg: 'testing',
+            email: ''
+        },
+        methods: {
+            submit() {
+                axios.post('http://127.0.0.1:8000/auth/users/reset_password/', { email: this.email })
+                    .then(data => {
+                        console.log(data)
+                        console.log(this.email)
+                    })
+                    .catch(err => {
+                        console.log(err.response)
+                    })
+            }
+        },
+    })
+</script>
+
+</html>

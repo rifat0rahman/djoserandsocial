@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app1">
+        <div>
+            <p>register</p>
+            <form @submit.prevent="submit">
+                <input type="text" placeholder="username" v-model="register.username">
+                <input type="email" placeholder="email" v-model="register.email">
+                <input type="password" placeholder="password" v-model="register.password">
+                <button class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div id="app2">
+        <div>
+            <p>login</p>
+            <form @submit.prevent="log">
+                <input type="email" placeholder="email" v-model="login.email">
+                <input type="password" placeholder="password" v-model="login.password">
+                <button class="btn">Submit</button>
+                <a href="/email">forgot password?</a>
+            </form>
+        </div>
+        <div>
+            login with google
+            <div>
+                <a
+                    href="https://accounts.google.com/o/oauth2/auth?client_id=193835369636-lcqcpslifbpo6qkd9qoe81tba041dgce.apps.googleusercontent.com&redirect_uri=http://127.0.0.1:8000/profile&state=nXviXnS84zCdY2FIJ26SOAju5m3lE3wl&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile+openid+openid+email+profile">
+                    google
+                </a>
+                <button @click.prevent="click">click</button>
+            </div>
+        </div>
+        <button @click.prevent='click'>click</button>
+    </div>
+</body>
+<style>
+    html {
+        background: rgb(230, 255, 225);
+    }
+
+    form input {
+        display: block;
+        margin: 10px;
+    }
+
+    .btn {
+        margin: 10px;
+    }
+</style>
+<script>
+    var app = new Vue({
+        el: '#app1',
+        delimiters: ['[[', ']]'],
+        data: {
+            message: 'Hello Vue!',
+            register: {
+                username: '',
+                email: "",
+                password: "",
+            }
+        },
+        methods: {
+            submit() {
+                axios.post('http://127.0.0.1:8000/auth/users/', this.register).then(data => {
+                    console.log(data)
+
+                })
+                    .catch(err => {
+                        console.log(err.response.data)
+                    })
+                console.log(this.register)
+            }
+        },
+    })
+    // app1 for login
+    var app = new Vue({
+        el: '#app2',
+        delimiters: ['[[', ']]'],
+        data: {
+            login: {
+                email: "",
+                password: "",
+            }
+        },
+        created() {
+        },
+        methods: {
+            log() {
+                axios.post('http://127.0.0.1:8000/auth/token/login/', this.login).then(data => {
+                    console.log(data)
+                })
+                    .catch(err => {
+                        console.log(err.response.data)
+                    })
+                console.log(this.login)
+            },
+        },
+    })
+</script>
+
+</html>
